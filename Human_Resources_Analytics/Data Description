@@ -1,0 +1,13 @@
+Using Human Resources Analytics simulated dataset from Kaggle to predict the probability of an employee leaving the company. 
+
+Fields in the dataset include:
+Satisfaction Level
+Last evaluation
+Number of projects
+Average monthly hours
+Time spent at the company
+Whether they have had a work accident
+Whether they have had a promotion in the last 5 years
+Departments (column sales)
+Salary
+Whether the employee has left
