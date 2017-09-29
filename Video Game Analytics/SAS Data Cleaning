@@ -1,0 +1,66 @@
+/***************************************************************************************/
+/* Kaggle Dataset - Video Game Sales and Ratings*/
+/***************************************************************************************/
+
+libname game "I:\SAS Projects\Video Game Sales";
+
+PROC IMPORT DATAFILE="I:\SAS Projects\Video Game Sales\Video_Games_Sales_as_at_22_Dec_2016.csv"
+	OUT=game.data 
+	DBMS=CSV 
+	REPLACE;	
+	GETNAMES=yes;
+	GUESSINGROWS=20000;
+RUN;
+
+PROC CONTENTS DATA=game.data VARNUM;RUN;
+PROC PRINT DATA=game.data(FIRSTOBS=1 OBS=10);RUN;
+PROC FREQ DATA=game.data;TABLES User_Score Rating;RUN;
+
+PROC PRINT DATA=game.data;
+	WHERE name = '';
+RUN;
+
+*recoding, remove 2 missing obs without name and K-A incorrect ERSB rating;
+DATA game.data2;
+	SET game.data;
+	IF Name='' THEN DELETE;
+
+	IF Rating='K-A' THEN DELETE;
+	IF User_Score='tbd' THEN User_Score=.;
+	IF Year_Of_Release='N/A' THEN Year_Of_Release=.;
+
+	User_Score1 = input(User_Score, 3.);
+	DROP User_Score;
+	RENAME User_Score1 = User_Score;
+RUN;
+
+PROC CONTENTS DATA=game.data2 VARNUM;RUN;
+PROC PRINT DATA=game.data2(OBS=10);RUN;
+
+PROC PRINT DATA=game.data2;
+	WHERE name='';
+RUN;
+
+PROC MEANS DATA=game.data2 MAXDEC=2; 
+	VAR NA_Sales EU_Sales JP_Sales Other_Sales Global_Sales Critic_Score Critic_Count User_Score User_Count;
+RUN;
+
+PROC FREQ DATA=game.data2;
+		TABLES 
+		Name
+		Platform
+		Year_Of_Release
+		Genre
+		Publisher
+		NA_Sales
+		EU_Sales
+		JP_Sales
+		Other_Sales
+		Global_Sales
+		Critic_Score
+		Critic_Count
+		User_Score
+		User_Count
+		Developer
+		Rating;
+RUN;
