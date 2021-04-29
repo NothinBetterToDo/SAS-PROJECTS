@@ -1,5 +1,5 @@
 # SAS-PROJECTS
-> Data Science and Analytics Projects using R
+> Data Science and Analytics Projects using SAS
 
 ## Table of contents
 * [General Info](#general-info)
